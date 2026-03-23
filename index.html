@@ -687,6 +687,7 @@
       object-fit: cover;
       border-radius: 14px;
       transition: transform .4s ease;
+      z-index: 1;
     }
     .gallery-item:hover img { transform: scale(1.05); }
     .gallery-item .gallery-caption {
@@ -697,13 +698,16 @@
       letter-spacing: .06em; text-transform: uppercase;
       color: var(--white); border-radius: 0 0 14px 14px;
       opacity: 0; transition: opacity .3s ease;
+      z-index: 2;
     }
     .gallery-item:hover .gallery-caption { opacity: 1; }
-    /* fallback when image missing */
+    /* fallback shown when image is missing */
     .gallery-item .gallery-fallback {
-      display: flex; flex-direction: column;
+      display: none;
+      flex-direction: column;
       align-items: center; justify-content: center;
       gap: 8px; width: 100%; height: 100%;
+      position: absolute; inset: 0;
     }
 
     /* ─── Responsive helpers ────────────────────────────── */
@@ -1028,7 +1032,7 @@
 
       <div class="gallery-item reveal">
         <img src="dstv.jpeg" alt="DSTV Installation"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          onerror="this.style.display='none'; this.parentElement.querySelector('.gallery-fallback').style.display='flex';" />
         <div class="gallery-caption">DSTV Installation</div>
         <div class="gallery-fallback" style="display:none;">
           <div class="gallery-item-icon">📡</div>
@@ -1038,7 +1042,7 @@
 
       <div class="gallery-item reveal">
         <img src="tv.jpeg" alt="TV Wall Mount"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          onerror="this.style.display='none'; this.parentElement.querySelector('.gallery-fallback').style.display='flex';" />
         <div class="gallery-caption">TV Wall Mount</div>
         <div class="gallery-fallback" style="display:none;">
           <div class="gallery-item-icon">📺</div>
@@ -1048,7 +1052,7 @@
 
       <div class="gallery-item reveal">
         <img src="camera.jpeg" alt="CCTV System"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          onerror="this.style.display='none'; this.parentElement.querySelector('.gallery-fallback').style.display='flex';" />
         <div class="gallery-caption">CCTV Security System</div>
         <div class="gallery-fallback" style="display:none;">
           <div class="gallery-item-icon">🔒</div>
@@ -1058,7 +1062,7 @@
 
       <div class="gallery-item reveal">
         <img src="wifi.jpeg" alt="WiFi Extender"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          onerror="this.style.display='none'; this.parentElement.querySelector('.gallery-fallback').style.display='flex';" />
         <div class="gallery-caption">WiFi Extender Setup</div>
         <div class="gallery-fallback" style="display:none;">
           <div class="gallery-item-icon">📶</div>
@@ -1068,7 +1072,7 @@
 
       <div class="gallery-item reveal">
         <img src="sound system.jpeg" alt="Sound System"
-          onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          onerror="this.style.display='none'; this.parentElement.querySelector('.gallery-fallback').style.display='flex';" />
         <div class="gallery-caption">Sound System</div>
         <div class="gallery-fallback" style="display:none;">
           <div class="gallery-item-icon">🔊</div>
@@ -1189,4 +1193,10 @@
   reveals.forEach(el => observer.observe(el));
 
   // Nav shadow on scroll
-  con
+  const nav = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    nav.style.boxShadow = window.scrollY > 40 ? '0 4px 30px rgba(0,0,0,.5)' : 'none';
+  });
+</script>
+</body>
+</html>
